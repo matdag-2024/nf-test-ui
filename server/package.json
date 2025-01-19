@@ -5,7 +5,16 @@
     "web-push": "^3.6.7"
   },
   "devDependencies": {
-    "start":"node index.js",
     "nodemon": "^3.1.9"
-  }
+  },
+  "name": "server",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
 }
