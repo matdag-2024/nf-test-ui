@@ -1,6 +1,5 @@
 const mongoose = require("mongoose")
 
-
 const connectDB = () => {
     return new Promise((resolve, reject) => {
         try {
@@ -16,7 +15,5 @@ const connectDB = () => {
             reject(error)
         }
     })
-
 }
-
 module.exports = connectDB

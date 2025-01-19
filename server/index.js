@@ -48,7 +48,7 @@ app.post("/save-subscription", async (req, res) => {
         }, { new: true })
 
         console.log(newSub)
-            
+
         res.json({ status: "Success", message: "Subscription saved!" })
     } catch (error) {
         console.log(error)
@@ -64,10 +64,21 @@ app.get("/clear-db", (req, res) => {
     res.json({ message: "db cleared" })
 })
 
-app.get('/send-notification', (req, res) => {
+app.get('/send-notification/:index', async (req, res) => {
     try {
+        if (!req.params.index) {
+            res.json({ message: "No index" })
+            return
+        }
+        const clients = await Subscription.find({})
+        const rawClinet = clients[req.params.index]
+        const client = {
+            endpoint: rawClinet.endpoint,
+            expirationTime: rawClinet.expirationTime,
+            keys: rawClinet.keys
+        }
         console.log("Sending Notification")
-        webpush.sendNotification(subDB[0], "Notification body from server")
+        webpush.sendNotification(client, "Notification body from server")
         res.json({ status: "Success", message: "Message sent to push service" })
     } catch (error) {
         console.log(error)
