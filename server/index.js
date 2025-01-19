@@ -5,8 +5,8 @@ const port = 3000
 const app = express()
 
 const apiKeys = {
-        publicKey : "BCTrWHRejIZgIzrsBob9CdszCoBhq0oylzFvjJ9_ZV2iIg15Rrb2c4UgRkH7_Jqt18-NIzW8htgyfOMT3JzppKQ",
-        privateKey : "v3DUPzYyQD7FXN-_hTGZjr7DXCvILmaGgJyMy-2kZFk"
+    publicKey: "BCTrWHRejIZgIzrsBob9CdszCoBhq0oylzFvjJ9_ZV2iIg15Rrb2c4UgRkH7_Jqt18-NIzW8htgyfOMT3JzppKQ",
+    privateKey: "v3DUPzYyQD7FXN-_hTGZjr7DXCvILmaGgJyMy-2kZFk"
 }
 
 webpush.setVapidDetails(
@@ -26,13 +26,20 @@ app.get("/", (req, res) => {
 const subDB = []
 
 app.post("/save-subscription", (req, res) => {
+    console.log("Saving")
     subDB.push(req.body)
     res.json({ status: "Success", message: "Subscription saved!" })
 })
 
-app.get('/send-notification',(req,res)=>{
-    webpush.sendNotification(subDB[0],"Heeeeeeeeeeeeeeeeee")
-    res.json({status:"Success", message:"Message sent to push service"})
+app.get("/db", (req, res) => {
+    console.log(subDB)
+    res.json(subDB)
+})
+
+app.get('/send-notification', (req, res) => {
+    console.log("Sending Notification")
+    webpush.sendNotification(subDB[0], "Heeeeeeeeeeeeeeeeee")
+    res.json({ status: "Success", message: "Message sent to push service" })
 })
 
 
