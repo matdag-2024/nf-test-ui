@@ -18,7 +18,8 @@ webpush.setVapidDetails(
 app.use(cors(
     {
         origin: [
-            "https://nf-ui-matdag.netlify.app"
+            "https://nf-ui-matdag.netlify.app",
+            "http://127.0.0.1:5500"
         ]
     }
 ))
