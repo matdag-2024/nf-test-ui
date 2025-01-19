@@ -15,7 +15,11 @@ webpush.setVapidDetails(
     apiKeys.privateKey
 )
 
-app.use(cors())
+app.use(cors(
+    {origin:[
+        "https://nf-ui-matdag.netlify.app"
+    ]}
+))
 app.use(express.json())
 
 
