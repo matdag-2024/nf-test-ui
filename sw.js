@@ -24,6 +24,7 @@ const saveSubscription = async (subscription)=>{
 }
 
 self.addEventListener('activate', async (e) => {
+    console.log("In activating module")
     const subscription = await self.registration.pushManager.subscribe({
         userVisibleOnly: true,
         applicationServerKey: urlBase64ToUint8Array("BCTrWHRejIZgIzrsBob9CdszCoBhq0oylzFvjJ9_ZV2iIg15Rrb2c4UgRkH7_Jqt18-NIzW8htgyfOMT3JzppKQ")

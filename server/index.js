@@ -45,6 +45,10 @@ app.get("/db", (req, res) => {
     console.log(subDB)
     res.json(subDB)
 })
+app.get("/clear-db",(req,res)=>{
+    subDB = []
+    res.json({message:"db cleared"})
+})
 
 app.get('/send-notification', (req, res) => {
     try {
