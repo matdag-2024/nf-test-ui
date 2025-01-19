@@ -13,11 +13,12 @@ function urlBase64ToUint8Array(base64String) {
     return outputArray;
 }
 
-const saveSubscription = async (subscription)=>{
-    const response = await fetch("https://nf-test-ui.onrender.com/save-subscription",{
-        method:"post",
-        headers:{"Content-type":"application/json"},
-        body:JSON.stringify(subscription)
+const saveSubscription = async (subscription) => {
+    const response = await fetch("https://nf-test-ui.onrender.com/save-subscription", {
+    // const response = await fetch("http://localhost:3000/save-subscription", {
+        method: "post",
+        headers: { "Content-type": "application/json" },
+        body: JSON.stringify(subscription)
     })
 
     return response.json()
@@ -33,10 +34,26 @@ self.addEventListener('activate', async (e) => {
     console.log(response)
 })
 
-self.addEventListener('push',(e)=>{
-    self.registration.showNotification("Yeeeah",{
-        body:e.data.text()
-    })
+// self.addEventListener('push',(e)=>{
+//     self.registration.showNotification("Yeeeah",{
+//         body:e.data.text()
+//     })
+// })
+self.addEventListener('push', (event) => {
+    const options = {
+        body: event.data ? event.data.text() : 'No payload',
+    };
+
+    event.waitUntil(
+        self.registration.showNotification('Yeeeah', options).then(() => {
+            // Send a message to the client to play audio
+            self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then((clients) => {
+                clients.forEach((client) => {
+                    client.postMessage({ action: 'play-audio' });
+                });
+            });
+        })
+    );
 })
 
 

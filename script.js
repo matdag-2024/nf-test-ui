@@ -23,6 +23,12 @@ const requestNotificationPermission = async () => {
         throw new Error("Notification permission not granted")
     }
 }
+navigator.serviceWorker.addEventListener('message', (event) => {
+    if (event.data && event.data.action === 'play-audio') {
+        const audio = new Audio('/sound.mp3'); // Replace with your audio file URL
+        audio.play().catch((error) => console.error('Audio playback failed:', error));
+    }
+});
 
 
 const main = async () => {
