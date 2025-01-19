@@ -26,6 +26,10 @@ const saveSubscription = async (subscription) => {
 
 self.addEventListener('activate', async (e) => {
     console.log("In activating module");
+    // Check if service worker is already active
+    if (self.registration.active) {
+        console.log("Service worker is already active");
+    }
     try {
         const existingSubscription = await self.registration.pushManager.getSubscription();
         console.log(existingSubscription,"Existing")

@@ -1,6 +1,8 @@
 const express = require("express")
 const cors = require("cors")
 const webpush = require("web-push")
+const connectDB = require("./connectDB")
+const Subscription = require("./schema/subscription.model")
 const port = 3000
 const app = express()
 
@@ -33,10 +35,20 @@ app.get("/", (req, res) => {
 
 let subDB = []
 
-app.post("/save-subscription", (req, res) => {
+app.post("/save-subscription", async (req, res) => {
     try {
         console.log("Saving")
+        console.log(req.body)
         subDB.push(req.body)
+
+        const newSub = await Subscription.create({
+            endpoint: req.body.endpoint,
+            expirationTime: req.body.expirationTime,
+            keys: req.body.keys
+        }, { new: true })
+
+        console.log(newSub)
+            
         res.json({ status: "Success", message: "Subscription saved!" })
     } catch (error) {
         console.log(error)
@@ -47,9 +59,9 @@ app.get("/db", (req, res) => {
     console.log(subDB)
     res.json(subDB)
 })
-app.get("/clear-db",(req,res)=>{
+app.get("/clear-db", (req, res) => {
     subDB = []
-    res.json({message:"db cleared"})
+    res.json({ message: "db cleared" })
 })
 
 app.get('/send-notification', (req, res) => {
@@ -62,7 +74,11 @@ app.get('/send-notification', (req, res) => {
     }
 })
 
+const startServer = async () => {
+    await connectDB()
+    app.listen(port, () => {
+        console.log("Server running on port 3000")
+    })
+}
 
-app.listen(port, () => {
-    console.log("Server running on port 3000")
-})
+startServer()

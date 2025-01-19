@@ -13,8 +13,16 @@ const checkPermission = async () => {
 }
 
 const registerSW = async () => {
-    const registration = await navigator.serviceWorker.register('sw.js')
-    return registration
+    const existingRegistration = await navigator.serviceWorker.getRegistration();
+    if (existingRegistration) {
+        console.log('Service worker already registered:', existingRegistration);
+        return existingRegistration;
+    }
+    
+    const registration = await navigator.serviceWorker.register('sw.js');
+    console.log('New service worker registered:', registration);
+
+    return registration;
 }
 
 const requestNotificationPermission = async () => {
