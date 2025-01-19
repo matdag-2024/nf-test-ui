@@ -34,7 +34,9 @@ self.addEventListener('activate', async (e) => {
 })
 
 self.addEventListener('push',(e)=>{
-    self.registration.showNotification("Yeeeah",{body:e.data.text()})
+    self.registration.showNotification("Yeeeah",{
+        body:e.data.text()
+    })
 })
 
 

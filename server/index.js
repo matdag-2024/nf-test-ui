@@ -29,7 +29,7 @@ app.get("/", (req, res) => {
     res.send("Hellow")
 })
 
-const subDB = []
+let subDB = []
 
 app.post("/save-subscription", (req, res) => {
     try {
@@ -53,7 +53,7 @@ app.get("/clear-db",(req,res)=>{
 app.get('/send-notification', (req, res) => {
     try {
         console.log("Sending Notification")
-        webpush.sendNotification(subDB[0], "Heeeeeeeeeeeeeeeeee")
+        webpush.sendNotification(subDB[0], "Notification body from server")
         res.json({ status: "Success", message: "Message sent to push service" })
     } catch (error) {
         console.log(error)
