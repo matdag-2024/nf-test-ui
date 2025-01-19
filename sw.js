@@ -14,8 +14,8 @@ function urlBase64ToUint8Array(base64String) {
 }
 
 const saveSubscription = async (subscription) => {
-    const response = await fetch("https://nf-test-ui.onrender.com/save-subscription", {
-    // const response = await fetch("http://localhost:3000/save-subscription", {
+    // const response = await fetch("https://nf-test-ui.onrender.com/save-subscription", {
+    const response = await fetch("http://localhost:3000/save-subscription", {
         method: "post",
         headers: { "Content-type": "application/json" },
         body: JSON.stringify(subscription)
@@ -25,14 +25,26 @@ const saveSubscription = async (subscription) => {
 }
 
 self.addEventListener('activate', async (e) => {
-    console.log("In activating module")
-    const subscription = await self.registration.pushManager.subscribe({
-        userVisibleOnly: true,
-        applicationServerKey: urlBase64ToUint8Array("BCTrWHRejIZgIzrsBob9CdszCoBhq0oylzFvjJ9_ZV2iIg15Rrb2c4UgRkH7_Jqt18-NIzW8htgyfOMT3JzppKQ")
-    })
-    const response = await saveSubscription(subscription)
-    console.log(response)
-})
+    console.log("In activating module");
+    try {
+        const existingSubscription = await self.registration.pushManager.getSubscription();
+        console.log(existingSubscription,"Existing")
+        if (!existingSubscription) {
+            const subscription = await self.registration.pushManager.subscribe({
+                userVisibleOnly: true,
+                applicationServerKey: urlBase64ToUint8Array("BCTrWHRejIZgIzrsBob9CdszCoBhq0oylzFvjJ9_ZV2iIg15Rrb2c4UgRkH7_Jqt18-NIzW8htgyfOMT3JzppKQ")
+            });
+            const response = await saveSubscription(subscription);
+            console.log('New subscription created:', response);
+        } else {
+            console.log('Existing subscription found:', existingSubscription);
+            const response = await saveSubscription(existingSubscription);
+            console.log('Existing subscription saved:', response);
+        }
+    } catch (error) {
+        console.error('Error handling subscription:', error);
+    }
+});
 
 // self.addEventListener('push',(e)=>{
 //     self.registration.showNotification("Yeeeah",{
