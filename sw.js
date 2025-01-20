@@ -14,8 +14,8 @@ function urlBase64ToUint8Array(base64String) {
 }
 
 const saveSubscription = async (subscription) => {
-    const response = await fetch("https://nf-test-ui.onrender.com/save-subscription", {
-    // const response = await fetch("http://localhost:3000/save-subscription", {
+    // const response = await fetch("https://nf-test-ui.onrender.com/save-subscription", {
+    const response = await fetch("http://localhost:3000/save-subscription", {
         method: "post",
         headers: { "Content-type": "application/json" },
         body: JSON.stringify(subscription)
@@ -31,6 +31,7 @@ self.addEventListener('activate', async (e) => {
         const existingSubscription = await self.registration.pushManager.getSubscription();
         console.log(existingSubscription,"Existing")
         if (!existingSubscription) {
+            console.log("Neeeeew")
             const subscription = await self.registration.pushManager.subscribe({
                 userVisibleOnly: true,
                 applicationServerKey: urlBase64ToUint8Array("BCTrWHRejIZgIzrsBob9CdszCoBhq0oylzFvjJ9_ZV2iIg15Rrb2c4UgRkH7_Jqt18-NIzW8htgyfOMT3JzppKQ")

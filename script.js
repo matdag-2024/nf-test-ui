@@ -15,8 +15,8 @@ const checkPermission = async () => {
 const registerSW = async () => {
     const existingRegistration = await navigator.serviceWorker.getRegistration();
     if (existingRegistration) {
-        await existingRegistration.unregister();
-        console.log('Unregistered existing service worker');
+        console.log('Service worker already registered:',existingRegistration);
+        return existingRegistration;
     }
 
     const registration = await navigator.serviceWorker.register('sw.js');
