@@ -38,7 +38,7 @@ let subDB = []
 app.post("/save-subscription", async (req, res) => {
     try {
         console.log("Saving")
-        console.log(req.body)
+        console.log(req.body,"body")
         const newSub = await Subscription.create({
             endpoint: req.body.endpoint,
             expirationTime: req.body.expirationTime,
