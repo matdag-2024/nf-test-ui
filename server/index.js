@@ -22,7 +22,8 @@ app.use(cors(
         origin: [
             "https://nf-ui-matdag.netlify.app",
             "http://127.0.0.1:5500",
-            "http://localhost:5500"
+            "http://localhost:5500",
+            "https://matdag-new.netlify.app"
         ]
     }
 ))
