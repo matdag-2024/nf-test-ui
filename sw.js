@@ -36,10 +36,32 @@ self.addEventListener('activate', async (e) => {
                 applicationServerKey: urlBase64ToUint8Array("BCTrWHRejIZgIzrsBob9CdszCoBhq0oylzFvjJ9_ZV2iIg15Rrb2c4UgRkH7_Jqt18-NIzW8htgyfOMT3JzppKQ")
             });
             const response = await saveSubscription(subscription);
+            self.clients.matchAll({
+                type: 'window',
+                includeUncontrolled: true
+            }).then(clients => {
+                clients.forEach(client => {
+                    client.postMessage({
+                        type: 'PUSH_RECEIVED',
+                        payload: {title:"New",message:"message1"}
+                    });
+                });
+            });
             console.log('New subscription created:', response);
         } else {
             console.log('Existing subscription found:', existingSubscription);
             const response = await saveSubscription(existingSubscription);
+            self.clients.matchAll({
+                type: 'window',
+                includeUncontrolled: true
+            }).then(clients => {
+                clients.forEach(client => {
+                    client.postMessage({
+                        type: 'PUSH_RECEIVED',
+                        payload: {title:"Existing",message:"message1"}
+                    });
+                });
+            });
             console.log('Existing subscription saved:', response);
         }
     } catch (error) {

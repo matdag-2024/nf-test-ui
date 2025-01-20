@@ -18,7 +18,7 @@ const registerSW = async () => {
         console.log('Service worker already registered:', existingRegistration);
         return existingRegistration;
     }
-    
+
     const registration = await navigator.serviceWorker.register('sw.js');
     console.log('New service worker registered:', registration);
 
@@ -36,7 +36,29 @@ navigator.serviceWorker.addEventListener('message', (event) => {
         const audio = new Audio('/sound.mp3'); // Replace with your audio file URL
         audio.play().catch((error) => console.error('Audio playback failed:', error));
     }
+    if (event.data.type === 'PUSH_RECEIVED') {
+        const data = event.data.payload;
+        updateUI(data);
+    }
 });
+
+// navigator.serviceWorker.addEventListener('message', (event) => {
+//     if (event.data.type === 'PUSH_RECEIVED') {
+//         const data = event.data.payload;
+//         updateUI(data);
+//     }
+// });
+
+function updateUI(data) {
+    const notificationDiv = document.getElementById('notifications');
+    const notification = document.createElement('div');
+    notification.innerHTML = `
+        <h3>${data.title}</h3>
+        <p>${data.message}</p>
+        <small>${new Date().toLocaleTimeString()}</small>
+    `;
+    notificationDiv.prepend(notification);
+}
 
 
 const main = async () => {
