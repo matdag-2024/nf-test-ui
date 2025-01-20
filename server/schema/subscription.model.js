@@ -14,11 +14,10 @@ const keySchema = mongoose.Schema({
 
 const subSchema = mongoose.Schema({
     endpoint: {
-        type: String
+        type: String,
+        require: true
     },
-    expirationTime: {
-
-    },
+    expirationTime: { type: String },
     keys: {
         type: keySchema
     }

@@ -38,16 +38,26 @@ let subDB = []
 app.post("/save-subscription", async (req, res) => {
     try {
         console.log("Saving")
-        console.log(req.body,"body")
-        const newSub = await Subscription.create({
+        console.log(req.body, "body")
+        console.log("..................")
+        if (!req.body.endpoint) {
+            res.status(400).json({ message: "Endpoint should not be empty" })
+            return
+        }
+        const existingSub = await Subscription.findOne({ endpoint: req.body.endpoint })
+        if (existingSub) {
+            res.json({ status: "Success", message: "Subscription already exists" })
+            return
+        }
+        await Subscription.create({
             endpoint: req.body.endpoint,
             expirationTime: req.body.expirationTime,
             keys: req.body.keys
-        }, { new: true })
-        // console.log(newSub)
+        })
         res.json({ status: "Success", message: "Subscription saved!.." })
     } catch (error) {
         console.log(error)
+        res.status(500).json({ status: "Error", message: "Failed to save subscription" })
     }
 })
 
