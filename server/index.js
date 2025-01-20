@@ -1,8 +1,8 @@
 const express = require("express")
 const cors = require("cors")
 const webpush = require("web-push")
-const connectDB = require("./connectDB")
 const Subscription = require("./schema/subscription.model")
+const connectMongoDB = require("./connectDB")
 const port = 3000
 const app = express()
 
@@ -39,25 +39,21 @@ app.post("/save-subscription", async (req, res) => {
     try {
         console.log("Saving")
         console.log(req.body)
-        subDB.push(req.body)
-
         const newSub = await Subscription.create({
             endpoint: req.body.endpoint,
             expirationTime: req.body.expirationTime,
             keys: req.body.keys
         }, { new: true })
-
-        console.log(newSub)
-
-        res.json({ status: "Success", message: "Subscription saved!" })
+        // console.log(newSub)
+        res.json({ status: "Success", message: "Subscription saved!.." })
     } catch (error) {
         console.log(error)
     }
 })
 
-app.get("/db", (req, res) => {
-    console.log(subDB)
-    res.json(subDB)
+app.get("/db", async (req, res) => {
+    const subs = await Subscription.find({})
+    res.json(subs)
 })
 app.get("/clear-db", (req, res) => {
     subDB = []
@@ -86,7 +82,7 @@ app.get('/send-notification/:index', async (req, res) => {
 })
 
 const startServer = async () => {
-    await connectDB()
+    await connectMongoDB()
     app.listen(port, () => {
         console.log("Server running on port 3000")
     })

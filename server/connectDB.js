@@ -1,6 +1,7 @@
 const mongoose = require("mongoose")
+// import { createClient } from 'redis';
 
-const connectDB = () => {
+const connectMongoDB = () => {
     return new Promise((resolve, reject) => {
         try {
             const db = mongoose.connect("mongodb+srv://forvoosh:passpass@cluster0.fbmnedq.mongodb.net/")
@@ -16,4 +17,22 @@ const connectDB = () => {
         }
     })
 }
-module.exports = connectDB
+
+// const connectRedis = () => {
+//     return new Promise((resolve, reject) => {
+//         try {
+//             const client = createClient();
+//             client.on('error', err => console.log('Redis Client Error', err));
+//             client.connect()
+//                 .then(() => {
+//                     console.log('Connected to Redis')
+//                     resolve(client)
+//                 })
+//                 .catch(err => console.log('Failed to connect to Redis', err));
+//         } catch (error) {
+//             reject(error)
+//         }
+//     })
+// }
+
+module.exports = connectMongoDB
